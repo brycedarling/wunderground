@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+type Location struct {
+	City  string
+	State string
+}
+
 const (
 	WUNDERGROUND_API_KEY = "WUNDERGROUND_API_KEY"
 )
@@ -33,22 +38,25 @@ func GetBaseApiUrl() (string, error) {
 	return baseApiUrl, nil
 }
 
-func ParseCityState(cityAndState string) (string, string, error) {
+func ParseCityState(cityAndState string) (Location, error) {
+	var location Location
+
 	parts := strings.Split(cityAndState, ", ")
 
 	if len(parts) != 2 {
-		return "", "", errors.New("Both city and state are required")
+		return location, errors.New("Both city and state are required")
 	}
 
-	city, state := parts[0], parts[1]
+	location.City = parts[0]
+	location.State = parts[1]
 
-	if len(city) == 0 {
-		return "", "", errors.New("City must be a non-empty string")
+	if len(location.City) == 0 {
+		return location, errors.New("City must be a non-empty string")
 	}
 
-	if len(state) != 2 {
-		return "", "", errors.New("State must be a two character string")
+	if len(location.State) != 2 {
+		return location, errors.New("State must be a two character string")
 	}
 
-	return city, state, nil
+	return location, nil
 }

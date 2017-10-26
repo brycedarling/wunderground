@@ -35,21 +35,21 @@ type Time struct {
 }
 
 func GetAstronomyUrl(cityAndState string) (string, error) {
-	city, state, err := ParseCityState(cityAndState)
-
-	if err != nil {
-		return "", err
-	}
-
-	city = strings.Replace(city, " ", "_", -1)
-
 	baseApiUrl, err := GetBaseApiUrl()
 
 	if err != nil {
 		return "", err
 	}
 
-	url := fmt.Sprintf("%s/astronomy/q/%s/%s.json", baseApiUrl, state, city)
+	location, err := ParseCityState(cityAndState)
+
+	if err != nil {
+		return "", err
+	}
+
+	city := strings.Replace(location.City, " ", "_", -1)
+
+	url := fmt.Sprintf("%s/astronomy/q/%s/%s.json", baseApiUrl, location.State, city)
 
 	return url, nil
 }

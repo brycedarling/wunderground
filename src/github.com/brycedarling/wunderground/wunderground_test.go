@@ -57,7 +57,7 @@ func TestGetBaseApiUrl_ReturnsBaseApiUrl(t *testing.T) {
 }
 
 func TestParseCityState_EmptyString(t *testing.T) {
-	_, _, err := ParseCityState("")
+	_, err := ParseCityState("")
 
 	if err == nil || err.Error() != "Both city and state are required" {
 		t.Errorf("ParseCityState() should return an error that it requires both city and state")
@@ -65,7 +65,7 @@ func TestParseCityState_EmptyString(t *testing.T) {
 }
 
 func TestParseCityState_StringWithoutComma(t *testing.T) {
-	_, _, err := ParseCityState("Not a city state")
+	_, err := ParseCityState("Not a city state")
 
 	if err == nil || err.Error() != "Both city and state are required" {
 		t.Errorf("ParseCityState() should return an error that it requires both city and state")
@@ -73,7 +73,7 @@ func TestParseCityState_StringWithoutComma(t *testing.T) {
 }
 
 func TestParseCityState_BlankCity(t *testing.T) {
-	_, _, err := ParseCityState(", Blank City")
+	_, err := ParseCityState(", Blank City")
 
 	if err == nil || err.Error() != "City must be a non-empty string" {
 		t.Errorf("ParseCityState() should return an error that city must be a non-empty string")
@@ -81,7 +81,7 @@ func TestParseCityState_BlankCity(t *testing.T) {
 }
 
 func TestParseCityState_InvalidStateLength(t *testing.T) {
-	_, _, err := ParseCityState("City, InvalidState")
+	_, err := ParseCityState("City, InvalidState")
 
 	if err == nil || err.Error() != "State must be a two character string" {
 		t.Errorf("ParseCityState() should return an error that state must be two characters")
@@ -89,13 +89,13 @@ func TestParseCityState_InvalidStateLength(t *testing.T) {
 }
 
 func TestParseCityState_ReturnsCityAndState(t *testing.T) {
-	city, state, _ := ParseCityState("Asheville, NC")
+	location, _ := ParseCityState("Asheville, NC")
 
-	if city != "Asheville" {
+	if location.City != "Asheville" {
 		t.Errorf("ParseCityState() should return the city")
 	}
 
-	if state != "NC" {
+	if location.State != "NC" {
 		t.Errorf("ParseCityState() should return the state")
 	}
 }
